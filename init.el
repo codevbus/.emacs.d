@@ -30,6 +30,9 @@ There are two things you can do about this warning:
 ;; Make Org mode work with files ending in .org
 ;; (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 ;; The above is the default in recent emacsen
+;; Org mode workflow state
+(setq org-todo-keywords
+      '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
 
 (display-line-numbers-mode t)
 
