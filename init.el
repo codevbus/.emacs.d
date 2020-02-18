@@ -1,3 +1,5 @@
+;; -*- mode: elisp -*-
+
 (require 'package)
 (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
                     (not (gnutls-available-p))))
@@ -17,9 +19,21 @@ There are two things you can do about this warning:
     (add-to-list 'package-archives (cons "gnu" (concat proto "://elpa.gnu.org/packages/")))))
 (package-initialize)
 
+(setq inhibit-splash-screen t)
+
+;; Enable transient mark mode
+(transient-mark-mode 1)
+
+;;;;Org mode configuration
+;; Enable Org mode
+(require 'org)
+;; Make Org mode work with files ending in .org
+;; (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+;; The above is the default in recent emacsen
+
 (display-line-numbers-mode t)
 
-(set-frame-font "Source Code Pro-14" nil t)
+(set-frame-font "Inconsolata-g for Powerline-14" nil t)
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
