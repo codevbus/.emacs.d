@@ -17,7 +17,6 @@ There are two things you can do about this warning:
   (when (< emacs-major-version 24)
     ;; For important compatibility libraries like cl-lib
     (add-to-list 'package-archives (cons "gnu" (concat proto "://elpa.gnu.org/packages/")))))
-(package-initialize)
 
 (setq inhibit-splash-screen t)
 
@@ -33,7 +32,7 @@ There are two things you can do about this warning:
 
 (display-line-numbers-mode t)
 
-(set-frame-font "Inconsolata-g for Powerline-14" nil t)
+(set-frame-font "Source Code Pro For Powerline-14" nil t)
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
