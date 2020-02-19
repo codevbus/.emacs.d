@@ -4,3 +4,7 @@ auto-save-list
 transient
 *~
 .DS_Store
+org-journal.cache
+custom.el
+package-selected-packages.el
+.cache
