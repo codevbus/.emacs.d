@@ -50,15 +50,45 @@
 (global-display-line-numbers-mode t)
 (set-frame-font "Source Code Pro For Powerline-14" nil t)
 
-;;;; Helm configuration
-;; Enable Helm
-(use-package helm)
+;;;;Ivy configuration
+(use-package ivy)
 
-;; Set default M-x to Helm
-(global-set-key (kbd "M-x") 'helm-M-x)
+;;;Counsel
+(use-package counsel
+  :demand t
+  :diminish ivy-mode
+  :bind
+  (("C-c C-r" . ivy-resume)
+   ("M-x" . counsel-M-x)
+   ("C-c i" . counsel-imenu)
+   ("C-x b" . ivy-switch-buffer)
+   ("C-x B" . ivy-switch-buffer-other-window)
+   ("C-x k" . kill-buffer)
+   ("C-x C-f" . counsel-find-file)
+   ("C-x l" . counsel-locate)
+   ("C-c j" . counsel-git)
+   ("C-c s" . counsel-rg)
+   ("M-y" . counsel-yank-pop)
+   :map help-map
+   ("f" . counsel-describe-function)
+   ("v" . counsel-describe-variable)
+   ("l" . counsel-info-lookup-symbol)
+   :map ivy-minibuffer-map
+   ("C-o" . ivy-occur)
+   ("<return>" . ivy-alt-done)
+   ("M-<return>" . ivy-immediate-done)
+   :map read-expression-map
+   ("C-r" . counsel-minibuffer-history))
+  :custom
+  (ivy-use-virtual-buffers t)
+  (ivy-display-style 'fancy)
+  (ivy-use-selectable-prompt t)
+  (ivy-re-builders-alist
+   '((t . ivy--regex-plus)))
+  :config
+  (ivy-mode +1))
 
 ;;;;Org mode configuration
-;; Enable Org mode
 (use-package org)
 ;; Make Org mode work with files ending in .org
 ;; (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
@@ -136,7 +166,11 @@
   (evil-mode 1))
 
 (use-package magit
-   :ensure t)
+  :ensure t)
+
+(use-package ox-hugo
+  :ensure t            ;Auto-install the package from Melpa (optional)
+  :after ox)
 
 (setq custom-file "~/.emacs.d/package-selected-packages.el")
 (load custom-file)

@@ -8,3 +8,4 @@ org-journal.cache
 custom.el
 package-selected-packages.el
 .cache
+straight
