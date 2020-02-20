@@ -1,5 +1,12 @@
+;;; init.el --- Initialization file for Emacs
+;;; Commentary:
+;;; my naive init.el, shamelessly cribbed from others
+
 ;;;; -*- lexical-binding: t -*-
-;;; Straight setup
+
+;;; Code:
+
+;;;; Straight Config
 (setq straight-repository-branch "develop")
 
 (defvar bootstrap-version)
@@ -17,7 +24,7 @@
 
 (setq straight-use-package-by-default t)
 
-;;; Use-package Setup
+;;;; Use-package Setup
 (straight-use-package 'use-package)
 (use-package blackout
   :straight (blackout :host github :repo "raxod502/blackout")
@@ -43,17 +50,24 @@
 
 (setq inhibit-splash-screen t)
 
-;; Enable transient mark mode
+;;; Misc config
 (transient-mark-mode 1)
 
-;;;;Visual config
+;;; Visual config
 (global-display-line-numbers-mode t)
 (set-frame-font "Source Code Pro For Powerline-14" nil t)
+(with-eval-after-load "treemacs"
+  (defvar treemacs-custom-tf-icon (all-the-icons-icon-for-file
+				   "file.tf"))
+  (treemacs-define-custom-icon treemacs-custom-tf-icon "tf" "tfvars" "tfstate"))
 
-;;;;Ivy configuration
+(use-package all-the-icons
+  :ensure t)
+
+;;;; Ivy configuration
 (use-package ivy)
 
-;;;Counsel
+;;; Counsel
 (use-package counsel
   :demand t
   :diminish ivy-mode
@@ -88,7 +102,7 @@
   :config
   (ivy-mode +1))
 
-;;;;Org mode configuration
+;;;; Org mode configuration
 (use-package org)
 ;; Make Org mode work with files ending in .org
 ;; (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
@@ -96,10 +110,12 @@
 ;; Org mode workflow state
 (setq org-todo-keywords
       '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
+
 ;; Kbd shortcuts
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c [") 'org-agenda-file-to-front)
 (global-set-key (kbd "C-c ]") 'org-remove-file)
+
 ;; org agenda files
 (setq org-agenda-files '("~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org"))
 
@@ -114,7 +130,7 @@
 ;; Org roam
 (use-package org-roam
       :after org
-      :hook 
+      :hook
       ((org-mode . org-roam-mode)
        (after-init . org-roam--build-cache-async) ;; optional!
        )
@@ -149,8 +165,6 @@
   (deft-default-extension "org")
   (deft-directory "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/2b/org"))
 
-;;;;Misc config
-;; Set the exec path from the shell path
 (use-package exec-path-from-shell
   :config
   (exec-path-from-shell-initialize))
@@ -172,5 +186,174 @@
   :ensure t            ;Auto-install the package from Melpa (optional)
   :after ox)
 
-(setq custom-file "~/.emacs.d/package-selected-packages.el")
+(use-package winum
+  :ensure t)
+(winum-mode)
+
+;;;; Treemacs
+(use-package treemacs
+  :ensure t
+  :defer t
+  :init
+  (with-eval-after-load 'winum
+    (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
+  :bind
+  (:map global-map
+        ("M-0"       . treemacs-select-window)
+        ("C-x t 1"   . treemacs-delete-other-windows)
+        ("C-x t t"   . treemacs)
+        ("C-x t B"   . treemacs-bookmark)
+        ("C-x t C-t" . treemacs-find-file)
+        ("C-x t M-t" . treemacs-find-tag)))
+
+(use-package treemacs-evil
+  :after treemacs evil
+  :ensure t)
+
+(use-package treemacs-magit
+  :after treemacs magit
+  :ensure t)
+
+(use-package treemacs-projectile
+  :after treemacs projectile
+  :ensure t)
+
+(use-package projectile
+  :ensure t
+  :config
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+  (projectile-mode +1))
+
+(use-package direnv
+  :ensure t)
+
+(use-package flycheck
+  :config
+  (global-flycheck-mode +1)
+
+  (setq-default flycheck-check-syntax-automatically '(save
+                                                      idle-change
+                                                      mode-enabled))
+
+  ;; Temporary workaround: Direnv needs to load PATH before flycheck looks
+  ;; for linters
+  (setq flycheck-executable-find
+        (lambda (cmd)
+          (direnv-update-environment default-directory)
+          (executable-find cmd))))
+
+(use-package flycheck-hydra
+  :straight nil
+  :no-require t
+  :after flycheck hydra
+  :config
+  (defhydra jethro/hydra-flycheck
+    (:pre (progn (setq hydra-lv t) (flycheck-list-errors))
+          :post (progn (setq hydra-lv nil) (quit-windows-on "*Flycheck errors*"))
+          :hint nil)
+    "Errors"
+    ("f"  flycheck-error-list-set-filter                            "Filter")
+    ("n"  flycheck-next-error                                       "Next")
+    ("p"  flycheck-previous-error                                   "Previous")
+    ("<" flycheck-first-error                                      "First")
+    (">"  (progn (goto-char (point-max)) (flycheck-previous-error)) "Last")
+    ("q"  nil))
+
+  (bind-key "C-c h f" #'jethro/hydra-flycheck/body))
+
+(use-package flycheck-pos-tip
+  :after flycheck
+  :hook
+  (flycheck-mode . flycheck-pos-tip-mode))
+
+(flycheck-add-mode 'proselint 'org-mode)
+
+(use-package yasnippet
+  :blackout ((yas-global-mode . t)
+             (yas-minor-mode . t))
+  :config
+  (yas-global-mode +1)
+  :custom
+  (add-to-list 'load-path (expand-file-name "snippets" user-emacs-directory))
+  (require 'yasnippet-snippets)
+  (yas-snippet-dirs (list (expand-file-name "snippets/snippets" user-emacs-directory))))
+
+(use-package company
+  :blackout company-mode
+  :defines (company-dabbrev-ignore-case company-dabbrev-downcase)
+  :commands company-abort
+  :bind (("M-/" . company-complete)
+         ("C-/" . company-yasnippet)
+         :map company-active-map
+         ("M-n" . nil)
+         ("M-p" . nil)
+         ("C-n" . company-select-next)
+         ("C-p" . company-select-previous))
+  :custom
+  (company-dabbrev-downcase nil)
+  (company-idle-delay 0.5)
+  (company-require-match nil)
+  (company-minimum-prefix-length 2)
+  (company-tooltip-align-annotations t)
+  :init
+  (global-company-mode +1))
+
+(use-package company-quickhelp
+  :after company
+  :bind (:map company-active-map
+              ("M-h" . company-quickhelp-manual-begin))
+  :hook
+  (company-mode . company-quickhelp-mode))
+
+(use-package lsp-mode
+  :commands lsp
+  :hook
+  (lsp-after-open-hook . lsp-enable-imenu)
+  (go-mode . lsp)
+  (python-mode . lsp)
+  (terraform-mode . lsp)
+  (yaml-mode . lsp)
+  :custom
+  (lsp-message-project-root-warning t))
+
+(use-package lsp-ui
+  :after lsp-mode
+  :hook
+  (lsp-mode . lsp-ui-mode)
+  :config
+  (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
+  (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references))
+
+(use-package company-lsp
+  :after (company lsp)
+  :company lsp-mode)
+
+(use-package lsp-ivy
+  :commands lsp-ivy-workspace-symbol)
+
+(use-package lsp-treemacs
+  :commands lsp-treemacs-errors-list)
+
+;;;; Languages
+
+;;; Hashicorp Configuration Language
+(use-package hcl-mode
+  :ensure t)
+
+;;; Terraform
+(use-package terraform-mode
+  :ensure t)
+
+;;; Python
+(use-package python-mode
+  :ensure t)
+
+(use-package elpy
+  :ensure t
+  :defer t
+  :init
+  (advice-add 'python-mode :before 'elpy-enable))
+	      
+
+(setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)

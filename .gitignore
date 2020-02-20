@@ -1,11 +1,12 @@
-elpa
+elpa/
 elpa-*
 auto-save-list
-transient
+transient/
 *~
 .DS_Store
 org-journal.cache
 custom.el
 package-selected-packages.el
-.cache
-straight
+.cache/
+straight/
+projectile-bookmarks.eld
