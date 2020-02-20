@@ -10,3 +10,4 @@ package-selected-packages.el
 .cache/
 straight/
 projectile-bookmarks.eld
+recentf
