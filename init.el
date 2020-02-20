@@ -23,6 +23,7 @@
   (load bootstrap-file nil 'nomessage))
 
 (setq straight-use-package-by-default t)
+(setq use-package-always-ensure t)
 
 ;;;; Use-package Setup
 (straight-use-package 'use-package)
@@ -61,8 +62,7 @@
 				   "file.tf"))
   (treemacs-define-custom-icon treemacs-custom-tf-icon "tf" "tfvars" "tfstate"))
 
-(use-package all-the-icons
-  :ensure t)
+(use-package all-the-icons)
 
 ;;;; Ivy configuration
 (use-package ivy)
@@ -170,29 +170,23 @@
   (exec-path-from-shell-initialize))
 
 (use-package base16-theme
-  :ensure t
   :config
   (load-theme 'base16-materia t))
 
 (use-package evil
-  :ensure t
   :config
   (evil-mode 1))
 
-(use-package magit
-  :ensure t)
+(use-package magit)
 
 (use-package ox-hugo
-  :ensure t            ;Auto-install the package from Melpa (optional)
   :after ox)
 
-(use-package winum
-  :ensure t)
+(use-package winum)
 (winum-mode)
 
 ;;;; Treemacs
 (use-package treemacs
-  :ensure t
   :defer t
   :init
   (with-eval-after-load 'winum
@@ -207,25 +201,20 @@
         ("C-x t M-t" . treemacs-find-tag)))
 
 (use-package treemacs-evil
-  :after treemacs evil
-  :ensure t)
+  :after treemacs evil)
 
 (use-package treemacs-magit
-  :after treemacs magit
-  :ensure t)
+  :after treemacs magit)
 
 (use-package treemacs-projectile
-  :after treemacs projectile
-  :ensure t)
+  :after treemacs projectile)
 
 (use-package projectile
-  :ensure t
   :config
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
   (projectile-mode +1))
 
-(use-package direnv
-  :ensure t)
+(use-package direnv)
 
 (use-package flycheck
   :config
@@ -337,23 +326,21 @@
 ;;;; Languages
 
 ;;; Hashicorp Configuration Language
-(use-package hcl-mode
-  :ensure t)
+(use-package hcl-mode)
 
 ;;; Terraform
-(use-package terraform-mode
-  :ensure t)
+(use-package terraform-mode)
 
 ;;; Python
-(use-package python-mode
-  :ensure t)
+(use-package python-mode)
 
 (use-package elpy
-  :ensure t
   :defer t
   :init
   (advice-add 'python-mode :before 'elpy-enable))
-	      
+
+;;; Groovy
+(use-package groovy-mode)
 
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
