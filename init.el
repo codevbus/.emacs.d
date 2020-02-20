@@ -23,10 +23,10 @@
   (load bootstrap-file nil 'nomessage))
 
 (setq straight-use-package-by-default t)
-(setq use-package-always-ensure t)
 
 ;;;; Use-package Setup
 (straight-use-package 'use-package)
+
 (use-package blackout
   :straight (blackout :host github :repo "raxod502/blackout")
   :demand t)
@@ -153,6 +153,8 @@
   (org-journal-file-format "%Y-%m-%d.org")
   (org-journal-dir "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/2b/org")
   (org-journal-date-format "%A, %d %B %Y"))
+
+(use-package org-cliplink)
 
 ;; Deft
 (use-package deft
