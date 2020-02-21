@@ -107,6 +107,7 @@
 ;; Make Org mode work with files ending in .org
 ;; (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 ;; The above is the default in recent emacsen
+(setq org-agenda-skip-deadline-prewarning-if-scheduled t)
 ;; Org mode workflow state
 (setq org-todo-keywords
       '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
@@ -121,8 +122,8 @@
 ;; org files
 (setq org-local "~/Documents/org/")
 (setq org-shared "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/")
-(add-to-list 'org-agenda-files org-local)
-(add-to-list 'org-agenda-files org-shared)
+(setq org-agenda-files (list (concat org-local "inbox.org")
+			     (concat org-shared "inbox.org")))
 
 (setq org-capture-templates
       `(("w" "Work Task" entry (file+headline ,(concat org-local "inbox.org") "Tasks")
@@ -132,7 +133,7 @@
 	("c" "Code Task" entry (file+headline ,(concat org-local "inbox.org") "Tasks")
 	 "* TODO %?\n %i\n  %a")
 	("l" "link" entry (file+headline, (concat org-shared "inbox.org") "Resources")
-	 "* TODO %(org-cliplink-capture) \n CREATED: %t\n" :immediate-finish t)))
+	 "** TODO %(org-cliplink-capture) \n CREATED: %t\n" :immediate-finish t)))
 
 (use-package org-bullets
   :after org
