@@ -115,9 +115,24 @@
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c [") 'org-agenda-file-to-front)
 (global-set-key (kbd "C-c ]") 'org-remove-file)
+(global-set-key (kbd "C-c l") 'org-store-link)
+(global-set-key (kbd "C-c c") 'org-capture)
 
-;; org agenda files
-(setq org-agenda-files '("~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org"))
+;; org files
+(setq org-local "~/Documents/org/")
+(setq org-shared "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/")
+(add-to-list 'org-agenda-files org-local)
+(add-to-list 'org-agenda-files org-shared)
+
+(setq org-capture-templates
+      `(("w" "Work Task" entry (file+headline ,(concat org-local "inbox.org") "Tasks")
+	 "* TODO %?")
+	("t" "Personal Todo" entry (file+headline ,(concat org-shared "inbox.org") "To-do")
+	 "* TODO %?")
+	("c" "Code Task" entry (file+headline ,(concat org-local "inbox.org") "Tasks")
+	 "* TODO %?\n %i\n  %a")
+	("l" "link" entry (file+headline, (concat org-shared "inbox.org") "Resources")
+	 "* TODO %(org-cliplink-capture) \n CREATED: %t\n" :immediate-finish t)))
 
 (use-package org-bullets
   :after org
@@ -136,7 +151,7 @@
        )
       :straight (:host github :repo "jethrokuan/org-roam" :branch "develop")
       :custom
-      (org-roam-directory "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/2b/org")
+      (org-roam-directory (concat org-shared "2b/org"))
       :bind
       ("C-c n l" . org-roam)
       ("C-c n t" . org-roam-today)
@@ -151,7 +166,7 @@
   :custom
   (org-journal-date-prefix "#+TITLE: ")
   (org-journal-file-format "%Y-%m-%d.org")
-  (org-journal-dir "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/2b/org")
+  (org-journal-dir (concat org-shared "2b/org"))
   (org-journal-date-format "%A, %d %B %Y"))
 
 (use-package org-cliplink)
