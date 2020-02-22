@@ -108,6 +108,9 @@
 ;; (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 ;; The above is the default in recent emacsen
 (setq org-agenda-skip-deadline-prewarning-if-scheduled t)
+(setq org-refile-use-outline-path t)
+(setq org-outline-path-complete-in-steps nil)
+(setq org-refile-allow-creating-parent-nodes 'confirm)
 ;; Org mode workflow state
 (setq org-todo-keywords
       '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
@@ -118,16 +121,21 @@
 (global-set-key (kbd "C-c ]") 'org-remove-file)
 (global-set-key (kbd "C-c l") 'org-store-link)
 (global-set-key (kbd "C-c c") 'org-capture)
+(global-set-key (kbd "C-c w") 'toggle-window-split)
 
 ;; org files
 (setq org-local "~/Documents/org/")
 (setq org-shared "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/")
-(setq org-agenda-files (list (concat org-local "inbox.org")
+(setq org-agenda-files (list org-local
 			     (concat org-shared "inbox.org")))
+(setq org-refile-targets '((nil :maxlevel . 9)
+      (org-agenda-files :maxlevel . 9)))
 
 (setq org-capture-templates
       `(("w" "Work Task" entry (file+headline ,(concat org-local "inbox.org") "Tasks")
 	 "* TODO %?")
+	("n" "Work Note" entry (file+headline ,(concat org-local "inbox.org") "Notes")
+	 "* %?")
 	("t" "Personal Todo" entry (file+headline ,(concat org-shared "inbox.org") "To-do")
 	 "* TODO %?")
 	("c" "Code Task" entry (file+headline ,(concat org-local "inbox.org") "Tasks")
@@ -359,6 +367,32 @@
 
 ;;; Groovy
 (use-package groovy-mode)
+
+;;;; Functions
+(defun toggle-window-split ()
+  (interactive)
+  (if (= (count-windows) 2)
+      (let* ((this-win-buffer (window-buffer))
+             (next-win-buffer (window-buffer (next-window)))
+             (this-win-edges (window-edges (selected-window)))
+             (next-win-edges (window-edges (next-window)))
+             (this-win-2nd (not (and (<= (car this-win-edges)
+                                         (car next-win-edges))
+                                     (<= (cadr this-win-edges)
+                                         (cadr next-win-edges)))))
+             (splitter
+              (if (= (car this-win-edges)
+                     (car (window-edges (next-window))))
+                  'split-window-horizontally
+                'split-window-vertically)))
+        (delete-other-windows)
+        (let ((first-win (selected-window)))
+          (funcall splitter)
+          (if this-win-2nd (other-window 1))
+          (set-window-buffer (selected-window) this-win-buffer)
+          (set-window-buffer (next-window) next-win-buffer)
+          (select-window first-win)
+          (if this-win-2nd (other-window 1))))))
 
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
