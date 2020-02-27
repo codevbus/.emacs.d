@@ -63,6 +63,7 @@
   (treemacs-define-custom-icon treemacs-custom-tf-icon "tf" "tfvars" "tfstate"))
 
 (use-package all-the-icons)
+(use-package emojify)
 
 ;;;; Ivy configuration
 (use-package ivy)
@@ -179,6 +180,8 @@
   (org-journal-date-format "%A, %d %B %Y"))
 
 (use-package org-cliplink)
+
+(use-package org-ql)
 
 ;; Deft
 (use-package deft
@@ -348,6 +351,8 @@
 
 (use-package lsp-treemacs
   :commands lsp-treemacs-errors-list)
+
+(use-package f)
 
 ;;;; Languages
 
