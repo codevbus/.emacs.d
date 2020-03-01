@@ -54,6 +54,11 @@
 ;;; Misc config
 (transient-mark-mode 1)
 
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
+
 ;;; Visual config
 (global-display-line-numbers-mode t)
 (set-frame-font "Source Code Pro For Powerline-14" nil t)
@@ -112,6 +117,7 @@
 (setq org-refile-use-outline-path t)
 (setq org-outline-path-complete-in-steps nil)
 (setq org-refile-allow-creating-parent-nodes 'confirm)
+(setq org-export-headline-levels 4)
 ;; Org mode workflow state
 (setq org-todo-keywords
       '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
