@@ -117,7 +117,6 @@
 (setq org-refile-use-outline-path t)
 (setq org-outline-path-complete-in-steps nil)
 (setq org-refile-allow-creating-parent-nodes 'confirm)
-(setq org-export-headline-levels 4)
 ;; Org mode workflow state
 (setq org-todo-keywords
       '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
@@ -405,5 +404,9 @@
           (select-window first-win)
           (if this-win-2nd (other-window 1))))))
 
+;;; Get string date of the upcoming Friday
+(setq this-friday (org-time-string-to-time (org-read-date nil nil "++fri" )))
+
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
+
