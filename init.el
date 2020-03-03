@@ -359,9 +359,6 @@
 
 (use-package f)
 
-(use-package eyebrowse)
-(eyebrowse-mode t)
-
 ;;;; Languages
 
 ;;; Hashicorp Configuration Language
