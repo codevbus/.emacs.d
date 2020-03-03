@@ -59,6 +59,9 @@
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
+(desktop-save-mode t)
+(setq desktop-path '("~/.emacs.d/"))
+
 ;;; Visual config
 (global-display-line-numbers-mode t)
 (set-frame-font "Source Code Pro For Powerline-14" nil t)
@@ -66,6 +69,8 @@
   (defvar treemacs-custom-tf-icon (all-the-icons-icon-for-file
 				   "file.tf"))
   (treemacs-define-custom-icon treemacs-custom-tf-icon "tf" "tfvars" "tfstate"))
+
+(setq-default tab-width 4)
 
 (use-package all-the-icons)
 (use-package emojify)
@@ -85,6 +90,7 @@
    ("C-x B" . ivy-switch-buffer-other-window)
    ("C-x k" . kill-buffer)
    ("C-x C-f" . counsel-find-file)
+   ("C-c f" . counsel-recentf)
    ("C-x l" . counsel-locate)
    ("C-c j" . counsel-git)
    ("C-c s" . counsel-rg)
@@ -358,6 +364,9 @@
   :commands lsp-treemacs-errors-list)
 
 (use-package f)
+
+(use-package eyebrowse)
+(eyebrowse-mode t)
 
 ;;;; Languages
 
