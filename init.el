@@ -412,7 +412,6 @@
           (set-window-buffer (next-window) next-win-buffer)
           (select-window first-win)
           (if this-win-2nd (other-window 1))))))
-
 ;;; Get string date of the upcoming Friday
 (setq this-friday (org-time-string-to-time (org-read-date nil nil "++fri" )))
 
