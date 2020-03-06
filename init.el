@@ -363,6 +363,12 @@
 (use-package lsp-treemacs
   :commands lsp-treemacs-errors-list)
 
+(use-package lsp-python-ms
+  :ensure t
+    :hook (python-mode . (lambda ()
+                          (require 'lsp-python-ms)
+                          (lsp))))  ; or lsp-deferred
+
 (use-package f)
 
 (use-package eyebrowse)
@@ -382,7 +388,11 @@
 (use-package elpy
   :defer t
   :init
-  (advice-add 'python-mode :before 'elpy-enable))
+  (elpy-enable))
+
+(remove-hook 'elpy-modules 'elpy-module-flymake)
+
+
 
 ;;; Groovy
 (use-package groovy-mode)
