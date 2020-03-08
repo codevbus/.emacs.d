@@ -59,6 +59,8 @@
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
+(global-auto-revert-mode t)
+
 (desktop-save-mode t)
 (setq desktop-path '("~/.emacs.d/"))
 
