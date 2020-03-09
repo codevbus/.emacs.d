@@ -394,10 +394,11 @@
 
 (remove-hook 'elpy-modules 'elpy-module-flymake)
 
-
-
 ;;; Groovy
 (use-package groovy-mode)
+
+;;; Yaml
+(use-package yaml-mode)
 
 ;;;; Functions
 (defun toggle-window-split ()
