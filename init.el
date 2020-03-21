@@ -185,6 +185,8 @@
       ("C-c n i" . org-roam-insert)
       ("C-c n g" . org-roam-show-graph))
 
+(setq roam-files (directory-files org-roam-directory t "^.*\.org"))
+
 ;; Org journal
 (use-package org-journal
   :bind
@@ -432,11 +434,15 @@
           (set-window-buffer (next-window) next-win-buffer)
           (select-window first-win)
           (if this-win-2nd (other-window 1))))))
+
 ;;; Get string date of the upcoming Friday
 (setq this-friday (org-time-string-to-time (org-read-date nil nil "++fri" )))
 
 ;;; Truncate lines in the Deft buffer
 (add-hook 'deft-mode-hook 'toggle-truncate-lines)
+
+;;; Get string date of previous Friday
+(setq last-friday (org-time-string-to-time (org-read-date nil nil "-fri" )))
 
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
