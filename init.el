@@ -64,6 +64,8 @@
 (desktop-save-mode t)
 (setq desktop-path '("~/.emacs.d/"))
 
+(setq shell-file-name "/usr/local/bin/zsh")
+
 ;;; Visual config
 (global-display-line-numbers-mode t)
 (set-frame-font "Source Code Pro For Powerline-14" nil t)
@@ -125,6 +127,7 @@
 (setq org-refile-use-outline-path t)
 (setq org-outline-path-complete-in-steps nil)
 (setq org-refile-allow-creating-parent-nodes 'confirm)
+(setq org-return-follows-link t)
 ;; Org mode workflow state
 (setq org-todo-keywords
       '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
@@ -218,6 +221,10 @@
 (use-package evil
   :config
   (evil-mode 1))
+
+										; Disable evil-ret
+(with-eval-after-load 'evil-maps
+  (define-key evil-motion-state-map (kbd "RET") nil))
 
 (use-package magit)
 
@@ -427,6 +434,9 @@
           (if this-win-2nd (other-window 1))))))
 ;;; Get string date of the upcoming Friday
 (setq this-friday (org-time-string-to-time (org-read-date nil nil "++fri" )))
+
+;;; Truncate lines in the Deft buffer
+(add-hook 'deft-mode-hook 'toggle-truncate-lines)
 
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
