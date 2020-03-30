@@ -403,6 +403,9 @@
 
 (remove-hook 'elpy-modules 'elpy-module-flymake)
 
+(use-package pyenv-mode)
+(pyenv-mode)
+
 ;;; Groovy
 (use-package groovy-mode)
 
