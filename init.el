@@ -460,6 +460,10 @@
 ;;; Get string date of previous Friday
 (setq last-friday (org-time-string-to-time (org-read-date nil nil "-fri" )))
 
+(defun close-all-buffers ()
+  (interactive)
+    (mapc 'kill-buffer (buffer-list)))
+
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
 
