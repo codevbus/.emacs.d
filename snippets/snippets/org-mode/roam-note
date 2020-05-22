@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: roam-note
+# key: rn
+# --
+
+- tags :: $1
+- source :: $2
+- type :: $3
+- status :: $4
+- finished :: $5
+
+- $0

@@ -160,6 +160,11 @@
 	("l" "link" entry (file+headline, (concat org-shared "inbox.org") "Resources")
 	 "** TODO %(org-cliplink-capture) \n CREATED: %t\n" :immediate-finish t)))
 
+;; org babel
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((shell . t)))
+
 (use-package org-bullets
   :after org
   :hook
@@ -406,11 +411,19 @@
 (use-package pyenv-mode)
 (pyenv-mode)
 
+(use-package virtualenvwrapper)
+(venv-initialize-interactive-shells)
+(venv-initialize-eshell)
+(setq venv-location "~/.virtualenvs/")
+
 ;;; Groovy
 (use-package groovy-mode)
 
 ;;; Yaml
 (use-package yaml-mode)
+
+;;; Golang
+(use-package go-mode)
 
 ;;;; Functions
 (defun toggle-window-split ()
