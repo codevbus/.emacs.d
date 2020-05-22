@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: consumed content
+# key: cc
+# --
+#+SETUPFILE: ./hugo_setup.org
+#+TITLE: consumed content week ending ${1:$$(format-time-string "%m-%d-%y" this-friday)}
+#+HUGO_PUBLISHDATE: `(format-time-string "%Y-%m-%d" this-friday)`T00:00:00-05:00
+#+HUGO_SLUG: consumed-content-week-ending-$1
+#+HUGO_DRAFT: true
+#+HUGO_CATEGORIES: "Consumed Content"
+#+hugo_custom_front_matter: :toc false :lastmod false
+`(populate-content)`
